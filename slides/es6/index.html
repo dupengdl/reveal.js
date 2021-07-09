@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>ES6的实际应用</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Frank Du">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <link rel="stylesheet" href="../../dist/reset.css">
+  <link rel="stylesheet" href="../../dist/reveal.css">
+  <link rel="stylesheet" href="../../dist/theme/black.css" id="theme">
+
+  <!-- Theme used for syntax highlighting of code -->
+  <link rel="stylesheet" href="../../plugin/highlight/zenburn.css">
+
+</head>
+
+<body>
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+      <section id="cover">
+        <h1>ES6简介</h1>
+        <h4>ES6的实际应用</h4>
+        <p style="width: 70%;text-align: right;">
+          <small>Created by <a href="http://wiki.sankuai.com/pages/viewpage.action?pageId=624552143" target="_blank">杜鹏</a></small>
+        </p>
+      </section>
+
+      <section id="contents">
+        <h2>内容</h2>
+        <ul>
+          <li>历史简介</li>
+          <li>Why ES2015</li>
+          <li>浏览器的支持</li>
+          <li>Node.js的支持</li>
+          <li>新特性的选择</li>
+          <li>ES2015 beyond</li>
+          <li>Q&A</li>
+        </ul>
+      </section>
+
+      <section>
+        <section>
+          <h2>历史简介</h2>
+          <q>ECMAScript和JavaScript的关系是，前者是后者的规格，后者是前者的一种实现。在日常场合，这两个词是可以互换的。</q>
+          <ol>
+            <li>1995年5月，Brendan Eich只用了10天，就设计完成了JavaScript的初始版本</li>
+            <li class="fragment">1997年7月，ECMA组织（TC39）发布262号标准文件（ECMA-262）的第一版，并将这种语言称为ECMAScript</li>
+            <li class="fragment">1999年12月，ECMAScript 3.0版发布，成为JavaScript的通行标准</li>
+            <li class="fragment">2007年10月，ECMAScript 4.0版草案发布</li>
+            <li class="fragment">2008年7月，由于对于下一个版本包括的功能争议依然很大，ECMA开会决定，中止ECMAScript 4.0的开发</li>
+          </ol>
+          <aside class="notes">
+            <div>1995年5月，Brendan Eich只用了10天，就设计完成了JavaScript的初始版本</div>
+            <div>1997年7月，ECMA组织（TC39）发布262号标准文件（ECMA-262）的第一版，并将这种语言称为ECMAScript</div>
+            <div>1999年12月，ECMAScript 3.0版发布，成为JavaScript的通行标准</div>
+            <div>2007年10月，ECMAScript 4.0版草案发布；但由于4.0版的目标过于激进，各方对于是否通过这个标准，发生了严重分歧，以Yahoo、Microsoft、Google为首的大公司，反对JavaScript的大幅升级，主张小幅改动，以JavaScript创造者Brendan
+              Eich为首的Mozilla公司，则坚持当前的草案
+            </div>
+            <div>2008年7月，由于对于下一个版本包括的功能争议依然很大，ECMA开会决定，中止ECMAScript 4.0的开发，将其中涉及现有功能改善的一小部分，发布为ECMAScript 3.1（后改名为ECMAScript
+              5），将其他激进的设想放入下一个版本（由于会议的气氛项目代号起名为harmony）
+            </div>
+          </aside>
+        </section>
+        <section>
+          <ol start="6">
+            <li>2009年12月，ECMAScript 5.0版正式发布</li>
+            <li class="fragment">2013年3月，ECMAScript 6草案冻结，不再添加新功能</li>
+            <li class="fragment">2015年6月，ECMAScript 6正式发布。并且更名为ECMAScript 2015，TC39计划后续每年发布一个版本</li>
+            <li class="fragment">2016年6月，ECMAScript 2016发布，只增加了2个小功能</li>
+          </ol>
+          <aside class="notes">
+            <div>2009年12月，ECMAScript 5.0版正式发布，包括Array.prototype.forEach，String.prototype.trim等功能；Harmony项目则一分为二，一些较为可行的设想定名为JavaScript.next继续开发（后演变成ECMAScript
+              6）一些不是很成熟的设想，则被视为JavaScript.next.next，在更远的将来再考虑推出
+            </div>
+            <div>2013年3月，ECMAScript 6草案冻结，不再添加新功能</div>
+            <div>2015年6月，ECMAScript 6正式发布。并且更名为ECMAScript 2015，TC39计划后续每年发布一个版本</div>
+            <div>2016年6月，ECMAScript 2016发布，只增加了2个小功能</div>
+          </aside>
+        </section>
+      </section>
+
+      <!-- Example of nested vertical slides -->
+      <section>
+        <section>
+          <h2>Why ES2015</h2>
+          <h4>优势</h4>
+          <ul>
+            <li>更简洁、明确的语法，降低出错率</li>
+            <li>更多的原生API支持，减少第三方库的依赖</li>
+            <li>更少的代码量，提高了可读性</li>
+            <li>减少后期迁移成本</li>
+          </ul>
+        </section>
+        <section>
+          <h4>阻碍</h4>
+          <ul>
+            <li>ES6相较之前的版本变动较大，需要额外的学习成本</li>
+            <li>由于老版本浏览器的存在，需要借助babel等编译器</li>
+          </ul>
+        </section>
+        <section>
+          <h4>例子</h4>
+          <p>更简洁明确的语法，降低出错率</p>
+          <small>let, const, block-scope的引入，避免了变量提升带来的困扰和坑</small>
+          <pre>
+            <code class="hljs" data-trim contenteditable>
+              // use var
+              function calcTotalAmount (flag) {
+                var amount = 0;
+                if (flag) {
+                  var amount = 1;
+                }
+                {
+                  var amount = 100;
+                  {
+                    var amount = 1000;
+                    }
+                }
+                return amount;
+              }
+
+              console.log(calcTotalAmount(true));
+
+              // use let
+              function calcTotalAmount (flag) {
+                let amount = 0;
+                if (flag) {
+                  let amount = 1;
+                }
+                {
+                  let amount = 100;
+                  {
+                    let amount = 1000;
+                    }
+                }
+                return amount;
+              }
+
+              console.log(calcTotalAmount(true));
+
+            </code>
+          </pre>
+        </section>
+        <section>
+          <p>更多的原生API，减少第三方库的依赖</p>
+          <small>Array.from, Array.prototype.find, Object.assign等</small>
+          <pre><code class="hljs" data-trim contenteditable>
+// Array.from
+function foo () {
+    var es5args = Array.prototype.slice.call(arguments);
+    var es6args = Array.from(arguments);
+    console.log('es5args: ' + es5args);
+    console.log('es6args: ' + es6args);
+}
+foo('foo', 'bar', 123);
+
+// Array.prototype.find
+var array = [1, 2, 5];
+_.find(array, function (val) {return val >3;});
+array.find((val) => val >3);
+
+// Object.assign
+var person = {name: 'nick'};
+_.extend(person, {age: 18});
+Object.assign(person, {age: 18});
+						</code></pre>
+        </section>
+        <section>
+          <p>更少的代码量，提高了可读性</p>
+          <small>Promise的使用</small>
+          <pre><code class="hljs" data-trim contenteditable>
+// 三个异步操作
+function asyncA(callback) { setTimeout(function(){callback('a')}, 100);}
+function asyncB(callback) { setTimeout(function(){callback('b')}, 200);}
+function asyncC(callback) { setTimeout(function(){callback('c')}, 300);}
+
+
+asyncA(function(resultA) {
+  asyncB(function(resultB) {
+    asyncC(function(resultC) {
+      console.log(resultA, resultB, resultC);
+    });
+  });
+});
+
+// Promise形式的写法
+function promiseA() { return new Promise((resolve, reject) => setTimeout(resolve, 100)); }
+function promiseB() { return new Promise((resolve, reject) => setTimeout(resolve, 200)); }
+function promiseC() { return new Promise((resolve, reject) => setTimeout(resolve, 300)); }
+
+Promise.all([promiseA(), promiseB(), promiseC()]).then(([a, b, c]) => {
+  console.log(a, b, c);
+});
+						</code></pre>
+        </section>
+        <section>
+          <p>借助Babel，减少后期迁移成本</p>
+          <small><a href="http://babeljs.io/docs/setup/" target="_blank">Babel</a>简单介绍</small>
+          <pre><code class="hljs" data-trim contenteditable>
+// 以webpack中使用babel为例
+
+// 安装
+npm install --save-dev babel-loader babel-core
+// 配置.babelrc
+npm install babel-preset-es2015 --save-dev
+{
+  "presets": ["es2015"]
+}
+
+// 配置webpack
+module: {
+  loaders: [
+    {test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader'}
+  ]
+}
+						</code></pre>
+        </section>
+      </section>
+
+      <section>
+        <h2>浏览器的支持</h2>
+        <img height="390" src="./images/browser.png" alt="browser">
+        <p>
+          <small>参考链接：<a href="http://kangax.github.io/compat-table/es6/" target="_blank">浏览器对ES6特性的支持</a></small>
+        </p>
+      </section>
+
+      <section>
+        <h2>Node.js的支持</h2>
+        <img height="390" src="./images/nodejs.png" alt="nodejs">
+        <p>
+          <small>参考链接：<a href="http://node.green/" target="_blank">Node对ES6特性的支持</a></small>
+        </p>
+      </section>
+
+      <section>
+        <section>
+          <h2>新特性的选择</h2>
+          <table>
+            <thead>
+            <tr>
+              <th width="20">推荐</th>
+              <th width="80%">特性</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>推荐使用</td>
+              <td>let + const, default + rest + spread, enhanced object literals, arrow functions, classes, template strings, promises, math + number + string +
+                array + object APIs
+              </td>
+            </tr>
+            <tr>
+              <td>有考虑地使用</td>
+              <td>destructuring,iterators + for..of, modules, map + set + weakmap + weakset</td>
+            </tr>
+            <tr>
+              <td>慎重地使用</td>
+              <td>generators, symbols, binary and octal literals</td>
+            </tr>
+            <tr>
+              <td>不使用</td>
+              <td>unicode, proxies, subclassable built-ins, reflect api</td>
+            </tr>
+            </tbody>
+          </table>
+        </section>
+        <section>
+          <h4>let + const</h4>
+          <pre><code class="hljs" data-trim contenteditable>
+// let + const
+
+function testvar() {
+    console.log(hi);
+    var hi = 1;
+}
+
+function testlet() {
+    console.log(hi);
+    let hi = 1;
+}
+
+function testconst1() {
+    const foo = 1;
+    foo = 2;
+}
+
+function testconst2() {
+    const obj = { hello: 'world' };
+    obj.hello = 'galaxy';
+    console.log(obj);
+}
+
+// benifits: less error, and easy to define constant(vs. angular.constant)
+						</code></pre>
+        </section>
+        <section>
+          <h4>rest + spread</h4>
+          <pre><code class="hljs" data-trim contenteditable>
+// rest + spread
+function es5push() {
+    var args = Array.prototype.slice.call(arguments);
+    var list = args.shift();
+
+    args.forEach(function(a) {
+        list.push(a);
+    });
+}
+
+function es6push(list, ...values) {
+    values.forEach(function(v) {
+        list.push(v);
+    });
+}
+
+var es5arr = [];
+var es6arr = [];
+es5push(es5arr, 1, 2, 3);
+es6push(es6arr, 1, 2, 3);
+
+var spreadarr = [1, 2, 3];
+var newarr = [...spreadarr];
+console.log(es5arr);
+console.log(es6arr);
+console.log(newarr);
+// benifits: avoid using arguments in functions, more readable codes
+						</code></pre>
+        </section>
+        <section>
+          <h4>enhanced object literals</h4>
+          <pre><code class="hljs" data-trim contenteditable>
+// enhanced object literals
+function es5literals(name, age, addproperty) {
+    var obj = {
+        name: name,
+        age: age
+    };
+    obj[addproperty] = 'The name is ' + name;
+    obj[addproperty + '2'] = 'The age is ' + age;
+    return obj;
+}
+
+function es6literals(name, age, addproperty) {
+    return {
+        name,
+        age,
+        [addproperty]: 'The name is ' + name,
+        [addproperty + '2']: 'The age is ' + age
+    };
+}
+
+console.log(es5literals('Bruce', 30, 'desc'));
+console.log(es6literals('Bruce', 30, 'desc'));
+// benifits: less codes and convenient to define object property and methods
+						</code></pre>
+        </section>
+        <section>
+          <h4>arrow functions</h4>
+          <pre><code class="hljs" data-trim contenteditable>
+// arrow functions
+var es5logUpperCase = function() {
+    var self = this
+
+    this.string = this.string.toUpperCase()
+    return function () {
+        return console.log(self.string)
+    }
+}
+
+var es6logUpperCase = function() {
+    this.string = this.string.toUpperCase()
+    return () => console.log(this.string)
+}
+
+es5logUpperCase.call({ string: 'es5 rocks' })();
+es6logUpperCase.call({ string: 'es6 rocks' })();
+// benifits: simpler syntax, binding 'this'
+						</code></pre>
+        </section>
+        <section>
+          <h4>classes</h4>
+          <pre><code class="hljs" data-trim contenteditable>
+// classes
+class Parent {
+    constructor(options = {}) {
+        this.name = 'parent';
+        this.options = options;
+    }
+
+    showName() {
+        console.log(`Parent class name: ${this.name}`)
+    }
+}
+
+class Child extends Parent {
+    constructor(options = {}) {
+        super(options);
+        this.name = 'child';
+    }
+
+    showName() {
+        console.log(`Child class name: ${this.name}`)
+    }
+}
+
+var parentInstance = new Parent();
+parentInstance.showName();
+var childInstance = new Child({foo: 'bar'});
+childInstance.showName();
+console.log(childInstance.options);
+// benifits: clear codes and easier to implement inheritance
+						</code></pre>
+        </section>
+        <section>
+          <h4>iterators + for..of</h4>
+          <pre><code class="hljs" data-trim contenteditable>
+// iterators + for..of
+var arr = ['foo', 'bar'];
+
+// es5 loop
+for (var i = 0; i < arr.length; i++) {
+    console.log(arr[i]);
+}
+
+// es6 iterator
+console.log(typeof arr[Symbol.iterator] === 'function');
+for (item of arr) {
+    console.log(item);
+}
+
+// benifits: simpler than traditional for loop; easy to loop an array-like(has iterator interface) object; better than native forEach functions, can use continue or break
+						</code></pre>
+        </section>
+        <section>
+          <h4>promises</h4>
+          <pre><code class="hljs" data-trim contenteditable>
+// promises
+function loadImageAsync(url) {
+  return new Promise(function(resolve, reject) {
+    var image = new Image();
+
+    image.onload = function() {
+      resolve(image);
+    };
+
+    image.onerror = function() {
+      reject(new Error('Could not load image at ' + url));
+    };
+
+    image.src = url;
+  });
+}
+
+loadImageAsync('//p0.meituan.net/codeman/c27d09fb7939e066889e9438dc741aff16722.png')
+.then(function (data) {
+    return data.width;
+})
+.then(function (width) {
+    console.log(width);
+})
+.catch(function (err) {
+    console.error(err);
+});
+// benifits: get rid of callback-hell, simplify asynchronous code
+						</code></pre>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h2>ES2015 beyond</h2>
+          <ol>
+            <li>ES2016已于2016年6月正式发布，只包含了**（幂运算符）、Array.prototype.includes方法两个新特性</li>
+            <li>所有的新特性提案都需要走<a href="https://leanpub.com/exploring-es2016-es2017/read#ch_tc39-process" target="_blank">TC39 process</a>，才会被纳入下一个版本的发布</li>
+            <li>以后每年一次的发布都将是增量形式的迭代，不会出现类似ES2015的大规模更新</li>
+            <li>ES2017预计将包括以下新特性：async function, trailing commas, Object.entries & values method, etc.</li>
+          </ol>
+        </section>
+        <section>
+          <h4>async function demo</h4>
+          <pre><code class="hljs" data-trim contenteditable>
+// async function
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
+async function getTitle(url) {
+    let response = await fetch(url);
+    let html = await response.text();
+    return html.match(/&lt;title&gt;([\s\S]+)&lt;\/title&gt;/i)[1];
+}
+getTitle('https://github.com/tc39/ecma262').then(console.log);      // GitHub - tc39/ecma262: Status, process, and documents for ECMA262
+						</code></pre>
+          <aside class="notes">
+            nvm use v7 && node --harmony async.js
+            ../node_modules/.bin/babel demo -d build
+          </aside>
+        </section>
+      </section>
+
+      <section>
+        <h2>参考链接</h2>
+        <ul>
+          <li><a href="https://javascript.ruanyifeng.com/introduction/history.html" target="_blank">JavaScript语言的历史</a></li>
+          <li><a href="https://www.ecma-international.org/ecma-262/6.0/" target="_blank">ES6官方说明文档</a></li>
+          <li><a href="https://es6.ruanyifeng.com/" target="_blank">ECMAScript6 入门 - 阮一峰</a></li>
+          <li><a href="https://otakustay.com/es6-develop-overview/" target="_blank">使用ES6进行开发的思考</a></li>
+          <li><a href="https://leanpub.com/exploring-es2016-es2017/read#ch_tc39-process" target="_blank">The TC39 process for ECMAScript features（ES新特性提案流程）</a>
+          </li>
+          <li><a href="https://github.com/tc39/ecma262" target="_blank">ECMAScript Proposals（现有的新特性提案）</a></li>
+          <li><a href="https://codeutopia.net/blog/2015/01/06/es6-what-are-the-benefits-of-the-new-features-in-practice/" target="_blank">ES6: What are the
+            benefits of the new features in practice?</a></li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Q&A</h2>
+      </section>
+
+      <section style="text-align: left;">
+        <h1>THANK YOU</h1>
+        <img height="500" src="./images/thx.jpg" alt="thx">
+      </section>
+
+    </div>
+
+  </div>
+
+  <script src="../../dist/reveal.js"></script>
+  <script src="../../plugin/zoom/zoom.js"></script>
+  <script src="../../plugin/notes/notes.js"></script>
+  <script src="../../plugin/search/search.js"></script>
+  <script src="../../plugin/markdown/markdown.js"></script>
+  <script src="../../plugin/highlight/highlight.js"></script>
+
+  <script>
+
+  // Also available as an ES module, see:
+  // https://revealjs.com/initialization/
+  Reveal.initialize({
+    controls: true,
+    progress: true,
+    history: true,
+    center: true,
+
+    // Learn about plugins: https://revealjs.com/plugins/
+    plugins: [RevealZoom, RevealNotes, RevealMarkdown, RevealHighlight],
+  });
+
+  </script>
+
+</body>
+</html>
