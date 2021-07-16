@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>Awesome😎Unicode</title>
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="../../dist/reset.css">
+  <link rel="stylesheet" href="../../dist/reveal.css">
+  <link rel="stylesheet" href="../../dist/theme/solarized.css" id="theme">
+
+  <!-- Theme used for syntax highlighting of code -->
+  <link rel="stylesheet" href="../../plugin/highlight/monokai.css">
+  <style>
+  .code-point {
+    margin-top: -60px;
+    font-size: 48px;
+    font-family: Futura, “Trebuchet MS”, Arial, sans-serif;
+  }
+  .glyph-symbol {
+    margin: 80px auto 40px;
+    font-size: 64px;
+    font-family: Rockwell, “Courier Bold”, Courier, Georgia, Times, “Times New Roman”, serif;
+  }
+  .unique-name {
+    font-size: 48px;
+  }
+  .fragment-wrapper span {
+    display: block;
+  }
+  .table-middle th, .table-middle td {
+    text-align: center;
+    vertical-align: middle;
+  }
+  code.code-point {
+    font-size: 85%;
+    color: #bf616a;
+  }
+  </style>
+</head>
+
+<body>
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+      <section>
+        <h1 style="font-size: 102px;">Awesome😎Unicode &nbsp;</h1>
+        <div><small>2021.07</small></div>
+        <div><small><a href="https://git.corp.kuaishou.com/dupeng" target="_blank">杜鹏</a></small></div>
+      </section>
+
+      <section style="text-align: left">
+        <h3>内容</h3>
+        <ul>
+          <li>Unicode是什么</li>
+          <li>Unicode存储及编码</li>
+          <li>Emoji&Unicode</li>
+          <li>Unicode in JS</li>
+          <li>Q&A</li>
+        </ul>
+        <aside class="notes">
+          内容:
+          1. Unicode是什么(当前标准及历史简介；定义：码点、名称、图表；)<br>
+          2. Unicode存储及编码(BMP和辅助平面；UTF-8/16/32；)<br>
+          (小互动：猜使用频率最高的emoji；)<br>
+          3. Emoji&Unicode(在平面中的位置；修饰符；零宽组合字符)<br>
+          (小互动：猜字符串长度-emoji等)<br>
+          4. Unicode in JS(UCS-2和UTF-16；代理对；组合字符；字符串长度计算问题及原因；解决方案)<br>
+          冷知识：📅、emoji使用排行榜、emoji域名<br>
+          总结：如果遇到需要处理非BMP字符时，需要小心<br>
+        </aside>
+      </section>
+
+      <section>
+        <div>
+          <img src="./images/unicode-logo.jpg" alt="unicode-logo">
+        </div>
+        <div>
+          <blockquote cite="https://home.unicode.org/">
+            &ldquo;Everyone in the world should be able to use their own language on phones and computers.&rdquo;
+          </blockquote>
+        </div>
+        <aside class="notes">
+          世界上的所有人都应该可以在电脑或手机上自由使用他们自己的语言。<br>
+          这个是Unicode官网首页的标语，也是Unicode存在的意义
+        </aside>
+      </section>
+
+      <section>
+        <h2>Unicode版本</h2>
+        <table>
+          <thead>
+          <tr>
+            <th>版本</th>
+            <th>发布时间</th>
+            <th>字符数量</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>1.0</td>
+            <td>1991.10</td>
+            <td>7,161</td>
+          </tr>
+          <tr>
+            <td colspan="3" style="text-align: center;">...</td>
+          </tr>
+          <tr>
+            <td>13.0</td>
+            <td>2020.03</td>
+            <td>143,924</td>
+          </tr>
+          <tr style="color: #b8c4c9">
+            <td>14.0</td>
+            <td>2021.09</td>
+            <td>143,924+?</td>
+          </tr>
+          </tbody>
+        </table>
+        <aside class="notes">
+          Unicode第一版1.0于1991年10月发布，包含7,161个字符。<br>
+          最新版13.0，2020年3月发布，提供了143,924个字符的编码。<br>
+          计划于今年3月发布的14.0由于疫情原因，延迟到了2021年9月发布。
+        </aside>
+      </section>
+
+      <section>
+        <img src="./images/unicode-basics.jpg" alt="unicode-logo" width="600">
+        <h4 class="fragment-wrapper">
+          <span class="fragment fade-in" data-fragment-index="4"><span class="fragment grow" data-fragment-index="5">Unicode(UTF-8/16/32)</span></span>
+          <span class="fragment fade-in-then-semi-out" data-fragment-index="1">ASCII</span>
+          <span class="fragment fade-in-then-semi-out" data-fragment-index="2">GB-2312</span>
+          <span class="fragment fade-in-then-semi-out" data-fragment-index="3">GBK</span>
+        </h4>
+        <aside class="notes">
+          我们都知道，计算机的底层存储是基于二进制的，为了知道它应该展示或输出的内容，我们需要一套字符和二进制数字的映射关系，来展现信息，<br>
+          而Unicode就是这套映射关系中的一种，一个世界通用的字符集，它定义了全世界大部分书写体系的字符集，并为每一个字符分配了一个独一无二的数字。<br>
+          在Unicode出现之前，有ASCII编码，只支持128个英文字符及符号；后来出现的GB-2312、GBK编码，只支持汉字、韩语、日语字符等；如果使用错误的编码方式打开一个文件，就会出现乱码。<br>
+          所以这个时候，急需一个统一的标准。<br>
+          Unicode就是这样一个字符集的标准，翻译为统一码或国际码，包括世界上几乎所有的书面语言的字符，甚至一些古代文字语言，以及音乐、数学符号，还有我们使用频率越来越高的Emoji。<br>
+        </aside>
+      </section>
+
+      <section>
+        <section>
+          <div class="code-point">U+0041</div>
+          <div class="glyph-symbol">A</div>
+          <div class="unique-name">LATIN CAPITAL LETTER A</div>
+          <aside class="notes">
+            Unicode规范中，一个字符的定义包括<i>码点code point</i>、<i>名称unique name</i>、以及它的<i>字形/符号表示</i>。
+            我们先看三个例子
+          </aside>
+        </section>
+        <section>
+          <div class="code-point">U+00A9</div>
+          <div class="glyph-symbol">©</div>
+          <div class="unique-name">COPYRIGHT SIGN</div>
+        </section>
+        <section>
+          <div class="code-point">U+1F4A9</div>
+          <div class="glyph-symbol">💩</div>
+          <div class="unique-name">PILE OF POO</div>
+        </section>
+        <section>
+          <p>U+0000 ~ U+10FFFF</p>
+          <p class="fragment fade-up">1,114,112 = <span class="fragment fade-in">143,924(已使用)</span><span class="fragment fade-in"> + 970,188(未使用)</span></p>
+          <p class="fragment fade-up">1,114,112 = 2<sup>16</sup>×17</p>
+          <p class="fragment fade-up">17个平面 = <span class="fragment fade-in">基本多文种平面(BMP)</span><span class="fragment fade-in"> + 16×辅助平面(星光平面)</span></p>
+        </section>
+        <aside class="notes">
+          刚才的例子中可以看到，码点的表示形式是U+{hex}的形式，{hex}是一个16进制数<br>
+          码点的意义其实类似于一个索引，通过唯一的码点，就可以找到对应的字符或符号。<br>
+          码点取值范围是从U+0000到U+10FFFF，例如刚才的A=U+0041、💩=U+1F4A9<br>
+          可用的码点一共有1,114,112个(已使用143,924个，剩余970,188)，这个数字是通过 2<sup>16</sup>×17 得来的<br>
+          17是Unicode划分出来的17组编排，称为平面(Plane)，每个平面用于65536个码点，但是目前用到的平面其实很少
+        </aside>
+      </section>
+
+      <section>
+        <section>
+          <div>Basic Multilingual Plane, BMP(基本多文种平面)</div>
+          <div>码点范围：U+0000 - U+FFFF</div>
+          <img src="./images/BMP-usage.png" alt="bmp">
+          <div><small>Unicode基本多文种平面的示意图。每个写着数字的格子代表256个码点</small></div>
+          <aside class="notes">
+            基本多文种平面包含了世界主要语言的常用字符，图上可以看到各种不同的色块，代表不同的语言和符号<br>
+          </aside>
+        </section>
+        <section>
+          <ul>
+            <li>Supplementary Multilingual Plane，SMP(多文种补充平面)，码点范围：U+10000 - U+1FFFF</li>
+            <li>Supplementary Ideographic Plane，SIP(表意文字补充平面)，码点范围：U+20000 - U+2FFFF</li>
+            <li>Tertiary Ideographic Plane，TIP(表意文字第三平面)，码点范围：U+30000 - U+3FFFF</li>
+            <li>Plane 4 - Plane 13尚未使用，码点范围：U+40000 - U+DFFFF</li>
+            <li>Supplementary Special Purpose Plane，SSP(特别用途补充平面)，码点范围：U+E0000 - U+EFFFF</li>
+            <li>Private Use Area，PUA(私人使用区)，码点范围：U+F0000 - U+10FFFF</li>
+          </ul>
+          <aside class="notes">
+            第一辅助平面摆放拼音文字（古老文字）、手写文字、音符、绘文字和其他图形符号<br>
+            第二辅助平面主要包含了中日韩统一表意文字扩展区<br>
+            第三辅助平面主要包含了汉字扩展区<br>
+            第15-16平面都是私人使用区，主要作用是用于厂商或用户自由指定的码位，可通过安装某种字体文件来展示<br>
+            除了15-16平面，在BMP中也包含少量私人使用码位
+          </aside>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h3>Unicode与编码</h3>
+        </section>
+      </section>
+
+      <section>
+        <h3>Emoji😎</h3>
+        <div>2010年10月，Unicode6.0版收录了首批582个emoji表情符号</div>
+        <p class="fragment fade-up">使用频率最高的emoji？<span class="fragment fade-up">😂</span></p>
+      </section>
+
+      <section>
+        <img src="./images/emoji-use-all-time-high-july-2021.jpg" alt="emoji-use-all-time-high" width="600">
+        <div class="fragment">
+          <div>Emoji目前主要存储在BMP和SMP</div>
+          <div>码点范围在U+0000 - U+1FFFF</div>
+        </div>
+        <aside class="notes">
+          这个图是从2011年开始到2021年Emoji的使用情况，最新的数据显示今年年中，Emoji使用量达到了新的历史最高点，每5条tweet当中就有1条使用了emoji<br>
+          Emoji目前主要存储在BMP和SMP，码点范围在U+0000 - U+1FFFF<br>
+          接下来我们来看几个有意思的Emoji的特性
+        </aside>
+      </section>
+
+      <section>
+        <div>Emoji Skin Tone Modifier</div>
+        <table style="font-size: 24px">
+          <thead>
+          <tr>
+            <th>基础emoji</th>
+            <th>默认</th>
+            <th>浅肤色</th>
+            <th>较浅肤色</th>
+            <th>中等肤色</th>
+            <th>较深肤色</th>
+            <th>深肤色</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>修饰符码点</td>
+            <td>-</td>
+            <td>U+1F3FB</td>
+            <td>U+1F3FC</td>
+            <td>U+1F3FD</td>
+            <td>U+1F3FE</td>
+            <td>U+1F3FF</td>
+          </tr>
+          <tr>
+            <td>U+1F466: 男孩</td>
+            <td>👦</td>
+            <td>👦🏻</td>
+            <td>👦🏼</td>
+            <td>👦🏽</td>
+            <td>👦🏾</td>
+            <td>👦🏿</td>
+          </tr>
+          <tr>
+            <td>U+1F467: 女孩</td>
+            <td>👧</td>
+            <td>👧🏻</td>
+            <td>👧🏼</td>
+            <td>👧🏽</td>
+            <td>👧🏾</td>
+            <td>👧🏿</td>
+          </tr>
+          <tr>
+            <td>U+1F468: 男人</td>
+            <td>👨</td>
+            <td>👨🏻</td>
+            <td>👨🏼</td>
+            <td>👨🏽</td>
+            <td>👨🏾</td>
+            <td>👨🏿</td>
+          </tr>
+          <tr>
+            <td>U+1F469: 女人</td>
+            <td>👩</td>
+            <td>👩🏻</td>
+            <td>👩🏼</td>
+            <td>👩🏽</td>
+            <td>👩🏾</td>
+            <td>👩🏿</td>
+          </tr>
+          </tbody>
+        </table>
+        <div class="fragment fade-up">
+          支持对 手势类(✋✊)、运动类(🏄🏊‍️)、职业类(👩‍🚀🦸‍)emoji 的修饰
+        </div>
+        <div class="fragment fade-in">
+          <img src="./images/skin-tone.webp" alt="skin-tone">
+        </div>
+        <aside class="notes">
+          第一个特性是肤色修饰符。<br>
+          Unicode 8.0中加入了5个Emoji的修饰符，用来调节人物类Emoji的肤色，这5个修饰符可以用于所有的无性别人物的emoji上，比如手势类、运动类、职业类emoji<br>
+          以此来表示对种族多样性的支持、促进文化融合，降低可能存在的种族歧视(个人认为过度zzzq了)...<br>
+          如果要发送不同肤色的emoji的话，可以在输入法界面里找到支持多肤色的emoji上长按，就会出现选择不同肤色的选项<br>
+          根据统计数据显示，深肤色的修饰符用的最少，反映出发展中地区(非洲)接触到互联网的人数有限
+        </aside>
+      </section>
+
+      <section>
+        <section>
+          <div>Emoji ZWJ Sequence</div>
+          <div>
+            <div class="fragment">🤷 + ♀ = 🤷‍♀️</div>
+            <div class="fragment">👩🏻 + 🦰 = 👩🏼‍🦰</div>
+            <div class="fragment">👩 + 🍳 = 👩‍🍳</div>
+            <div class="fragment">👨 + 👩 + 👧 = 👨‍👩‍👦</div>
+          </div>
+          <aside class="notes">
+            接下来是无缝连接序列，这里的ZWJ, Zero Width Joiner指无缝连接符号，这个序列内的emoji都是由两个以上的emoji组合而成<br>
+            常见的组合形式有人物+性别、人物+发型、人物+物品=职业、人物+人物=家庭等等<br>
+            这里的组合方式和上面提到的肤色修饰符组合稍有不同，肤色修饰符是直接在人物类emoji后面加上修饰符即可；<br>
+            ZWJ序列的组合需要使用ZWJ无缝连接符来连接多个emoji，ZWJ的码点是U+200D，是一个不可见字符。<br>
+            但是ZWJ在不同平台上的兼容性不太好。 大家可以试一下，在KIM上发送“👩🏽‍💻”、“👨‍👩‍👧‍👦”，看一下在不支持的平台上，组合emoji的降级效果
+          </aside>
+        </section>
+        <section>
+          <div>
+            👨 + 👩 + 👧 + 👦 + 👦 = ?
+          </div>
+          <div class="fragment fade-up">
+            ❌
+          </div>
+          <div class="fragment fade-up">
+            👨‍👩‍👧‍👦‍👦
+          </div>
+          <div class="fragment fade-up">
+            <img width="500" src="./images/emojipedia-zwj-ideas.jpg" alt="zwj-ideas">
+          </div>
+          <div class="fragment">
+            <a href="https://www.unicode.org/emoji/charts/emoji-zwj-sequences.html" target="_blank">Recommended Emoji ZWJ Sequences</a>
+          </div>
+          <aside class="notes">
+            ZWJ的出现在不增加Emoji码点的前提下，大大增加了Emoji的丰富度<br>
+            那有同学可能会问，那我可不可以自由组合Emoji，比如我们响应国家号召，来一个5口之家的emoji？或者下图这些奇思妙想的组合<br>
+            答案是否定的，只有Emoji无缝连接序列里规定了的emoji才可以被正常渲染出来<br>
+            Unicode官方推荐的ZWJ序列emoji可以在<a href="https://www.unicode.org/emoji/charts/emoji-zwj-sequences.html" target="_blank">这里</a>查看<br>
+            当然，不同厂商，比如Apple可以自己添加对自由组合的emoji的支持，但是如果发送到其他平台上，就会出现上面提到的降级效果，显示成多个emoji，从而事实上背离了Unicode的初衷
+          </aside>
+        </section>
+      </section>
+
+      <section>
+        <div style="margin-bottom: 40px;">Emoji Variation Sequence</div>
+        <table class="table-middle" style="font-size: 20px;">
+          <thead>
+          <tr>
+            <th>Character</th>
+            <th>Base</th>
+            <th>Text</th>
+            <th>Emoji</th>
+            <th>Image</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>variation selector</td>
+            <td>-</td>
+            <td><code class="code-point">U+FE0E</code></td>
+            <td><code class="code-point">U+FE0F</code></td>
+            <td>-︎</td>
+          </tr>
+          <tr>
+            <td><a href="https://codepoints.net/U+2764"><code class="code-point">U+2764</code></a></td>
+            <td>❤</td>
+            <td>❤︎</td>
+            <td>❤️</td>
+            <td><img height="25" src="https://mts.io/public/images/2015/04/emoji-heart.png" alt="Apple heart emoji"></td>
+          </tr>
+          <tr>
+            <td><a href="https://codepoints.net/U+21A9"><code class="code-point">U+21A9</code></a></td>
+            <td>↩</td>
+            <td>↩︎</td>
+            <td>↩️</td>
+            <td><img height="25" src="https://mts.io/public/images/2015/04/emoji-return.png" alt="Apple return emoji"></td>
+          </tr>
+          <tr>
+            <td><a href="https://codepoints.net/U+25B6"><code class="code-point">U+25B6</code></a></td>
+            <td>▶</td>
+            <td>▶︎</td>
+            <td>▶️</td>
+            <td><img height="25" src="https://mts.io/public/images/2015/04/emoji-play.png" alt="Apple play emoji"></td>
+          </tr>
+          </tbody>
+        </table>
+        <p class="fragment fade-up"><a href="https://unicode.org/emoji/charts/emoji-variants.html">Emoji Variation Sequences</a></p>
+        <aside class="notes">
+          Emoji Variation Sequence，Emoji变体序列，是通过一个基础emoji加上一个变体选择符组成的emoji。<br>
+          一共有两种Emoji支持的变体选择符<br>
+          变量选择器-15(VARIATION SELECTOR-15, 简写VS-15): 作用是让基础Emoji 变成更接近文本样式(text-style)<br>
+          变量选择器-16(VARIATION SELECTOR-16, 简写VS-16): 作用则是让基础Emoji 变成更接近Emoji样式(emoji-style)<br>
+          但是这两个选择符在chrome下支持的不是太好，在Safari下支持比较好，显示的差异会很明显<br>
+          具体有哪些emoji支持变体显示，可以从这个链接查看<a href="https://unicode.org/emoji/charts/emoji-variants.html">Emoji Variation Sequences</a>
+        </aside>
+      </section>
+
+      <section data-auto-animate>
+        <p>'𠮷'.length = ？</p>
+        <p>'🇨🇳'.length = ？</p>
+        <p>'👩🏽‍💻'.length = ？</p>
+        <p>'👨‍👩‍👧‍👦'.length = ？</p>
+        <aside class="notes">
+          看完Emoji的相关概念，我们来看一下，这些字符/emoji在js当中，字符串长度应该是多少
+        </aside>
+      </section>
+
+      <section data-auto-animate>
+        <p>'𠮷'.length = 2</p>
+        <p>'🇨🇳'.length = 4</p>
+        <p>'👩🏽‍💻'.length = 7</p>
+        <p>'👨‍👩‍👧‍👦'.length = 11</p>
+        <aside class="notes">
+          为什么会出现这种问题呢，接下来我们就要看一下Unicode在JS当中是如何存储的
+        </aside>
+      </section>
+
+      <section>
+        <h3>Unicode in JS</h3>
+      </section>
+
+      <section>
+        <section>
+          <h3>UCS-2和UTF-16</h3>
+        </section>
+        <section>
+          <h3>代理对</h3>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h3>字符串长度计算问题</h3>
+        </section>
+        <section>
+          <h3>解决方案</h3>
+        </section>
+      </section>
+
+      <section style="text-align: left;">
+        <h3>冷知识</h3>
+        <ol>
+          <li>Unicode中超过一半的字符都是中日韩文字，详情见<a href="https://zh.wikipedia.org/wiki/Unicode%E5%AD%97%E7%AC%A6%E5%B9%B3%E9%9D%A2%E6%98%A0%E5%B0%84"
+            target="_blank">Unicode字符平面映射</a></li>
+          <li>日历的Emoji-📅在大部分厂商的环境中(安卓、iOS等)显示的日期都是7月17日，只有少部分厂商个性定制了这个日期，详情见<a href="https://emojipedia.org/calendar/" target="_blank">Emojipedia</a></li>
+          <li>Emoji使用频率排行，排名前十的是：😂❤️😍🤣😊🙏💕😭😘👍，详情见<a href="https://home.unicode.org/emoji/emoji-frequency/" target="_blank">Emoji Frequency</a></li>
+          <li>Emoji符号可以用于域名，截至2018年，以.ws作为顶级域的emoji域名已超过25000个，
+            Emoji域名注册见：<a href="https://i❤.ws" target="_blank">https://i❤.ws</a>，
+            维基百科：<a href="https://zh.wikipedia.org/wiki/Emoji%E5%9F%9F%E5%90%8D" target="_blank">emoji域名</a>
+          </li>
+        </ol>
+        <aside class="notes">
+          emoji域名所使用的emoji并不在美国信息交换标准代码范围之内，故当使用网页浏览器访问使用了emoji域名的网站时，域名中的emoji会被国际化域名编码所编码，从而转化为以xn--开头的ASCII字符域名，进而被域名系统所解析到对应的IP地址。
+        </aside>
+      </section>
+
+      <section style="text-align: left;">
+        <h2>参考</h2>
+        <ul>
+          <li><a href="https://zh.wikipedia.org/wiki/Unicode" target="_blank">Unicode - 维基百科</a></li>
+          <li><a href="https://home.unicode.org/" target="_blank">Unicode官网</a></li>
+          <li><a href="https://zh.wikipedia.org/wiki/%E7%B9%AA%E6%96%87%E5%AD%97" target="_blank">Emoji - 维基百科</a></li>
+          <li><a href="https://www.unicode.org/emoji/charts/emoji-zwj-sequences.html" target="_blank">Emoji ZWJ Sequences - Recommended</a></li>
+          <li><a href="https://home.unicode.org/emoji/emoji-frequency/" target="_blank">Emoji Frequency</a></li>
+          <li><a href="https://emojipedia.org/" target="_blank">Emojipedia📙 — 😃</a></li>
+          <li><a href="https://www.ruanyifeng.com/blog/2014/12/unicode.html" target="_blank">Unicode与JavaScript详解</a></li>
+          <li>
+            <a href="https://mp.weixin.qq.com/s?__biz=MzUyODg4Nzk2MQ==&mid=2247491058&idx=2&sn=3db4702ef9688736e2798d2a46a2127a&source=41"
+              target="_blank">每个JavaScript开发者都该懂的Unicode</a>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h1>Q&A</h1>
+      </section>
+
+      <section>
+        <h1>THANK YOU</h1>
+      </section>
+    </div>
+
+  </div>
+
+  <script src="../../dist/reveal.js"></script>
+  <script src="../../plugin/zoom/zoom.js"></script>
+  <script src="../../plugin/notes/notes.js"></script>
+  <script src="../../plugin/search/search.js"></script>
+  <script src="../../plugin/markdown/markdown.js"></script>
+  <script src="../../plugin/highlight/highlight.js"></script>
+  <script>
+
+  // Also available as an ES module, see:
+  // https://revealjs.com/initialization/
+  Reveal.initialize({
+    controls: true,
+    progress: false,
+    center: true,
+    hash: true,
+    margin: 0.2,
+
+    // Learn about plugins: https://revealjs.com/plugins/
+    plugins: [RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight],
+  })
+
+  </script>
+
+</body>
+</html>
