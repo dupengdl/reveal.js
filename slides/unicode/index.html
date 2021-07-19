@@ -38,7 +38,7 @@
     text-align: center;
     vertical-align: middle;
   }
-  code.code-point {
+  code.code {
     font-size: 85%;
     color: #bf616a;
   }
@@ -95,6 +95,23 @@
       </section>
 
       <section>
+        <img src="./images/unicode-basics.jpg" alt="unicode-logo" width="600">
+        <h4 class="fragment-wrapper">
+          <span class="fragment fade-in" data-fragment-index="4"><span class="fragment grow" data-fragment-index="5">Unicode(UTF-8/16/32)</span></span>
+          <span class="fragment fade-in-then-semi-out" data-fragment-index="1">ASCII</span>
+          <span class="fragment fade-in-then-semi-out" data-fragment-index="2">GB-2312</span>
+          <span class="fragment fade-in-then-semi-out" data-fragment-index="3">GBK</span>
+        </h4>
+        <aside class="notes">
+          我们都知道，计算机的底层存储是基于二进制的，为了知道它应该展示或输出的内容，我们需要一套字符和二进制数字的映射关系，来展现信息，<br>
+          而Unicode就是这套映射关系中的一种，一个世界通用的字符集，它定义了全世界大部分书写体系的字符集，并为每一个字符分配了一个独一无二的数字。<br>
+          在Unicode出现之前，有ASCII编码，只支持128个英文字符及符号；后来出现的GB-2312、GBK编码，只支持汉字、韩语、日语字符等；如果使用错误的编码方式打开一个文件，就会出现乱码。<br>
+          所以这个时候，急需一个统一的标准。<br>
+          Unicode就是这样一个字符集的标准，翻译为统一码或国际码，包括世界上几乎所有的书面语言的字符，甚至一些古代文字语言，以及音乐、数学符号，还有我们使用频率越来越高的Emoji。<br>
+        </aside>
+      </section>
+
+      <section>
         <h2>Unicode版本</h2>
         <table>
           <thead>
@@ -133,23 +150,6 @@
       </section>
 
       <section>
-        <img src="./images/unicode-basics.jpg" alt="unicode-logo" width="600">
-        <h4 class="fragment-wrapper">
-          <span class="fragment fade-in" data-fragment-index="4"><span class="fragment grow" data-fragment-index="5">Unicode(UTF-8/16/32)</span></span>
-          <span class="fragment fade-in-then-semi-out" data-fragment-index="1">ASCII</span>
-          <span class="fragment fade-in-then-semi-out" data-fragment-index="2">GB-2312</span>
-          <span class="fragment fade-in-then-semi-out" data-fragment-index="3">GBK</span>
-        </h4>
-        <aside class="notes">
-          我们都知道，计算机的底层存储是基于二进制的，为了知道它应该展示或输出的内容，我们需要一套字符和二进制数字的映射关系，来展现信息，<br>
-          而Unicode就是这套映射关系中的一种，一个世界通用的字符集，它定义了全世界大部分书写体系的字符集，并为每一个字符分配了一个独一无二的数字。<br>
-          在Unicode出现之前，有ASCII编码，只支持128个英文字符及符号；后来出现的GB-2312、GBK编码，只支持汉字、韩语、日语字符等；如果使用错误的编码方式打开一个文件，就会出现乱码。<br>
-          所以这个时候，急需一个统一的标准。<br>
-          Unicode就是这样一个字符集的标准，翻译为统一码或国际码，包括世界上几乎所有的书面语言的字符，甚至一些古代文字语言，以及音乐、数学符号，还有我们使用频率越来越高的Emoji。<br>
-        </aside>
-      </section>
-
-      <section>
         <section>
           <div class="code-point">U+0041</div>
           <div class="glyph-symbol">A</div>
@@ -180,7 +180,7 @@
           码点的意义其实类似于一个索引，通过唯一的码点，就可以找到对应的字符或符号。<br>
           码点取值范围是从U+0000到U+10FFFF，例如刚才的A=U+0041、💩=U+1F4A9<br>
           可用的码点一共有1,114,112个(已使用143,924个，剩余970,188)，这个数字是通过 2<sup>16</sup>×17 得来的<br>
-          17是Unicode划分出来的17组编排，称为平面(Plane)，每个平面用于65536个码点，但是目前用到的平面其实很少
+          17是Unicode划分出来的17组编排，称为平面(Plane)，每个平面用于65536个码点，目前只用到了7个平面，还有10个平面尚未使用
         </aside>
       </section>
 
@@ -216,6 +216,73 @@
       <section>
         <section>
           <h3>Unicode与编码</h3>
+          <div>
+            Unicode - 字符集标准
+          </div>
+          <div class="fragment fade-up">
+            Unicode Transformation Format(UTF) - Unicode的编码方式
+          </div>
+          <div class="fragment fade-up">
+            UTF-8/16/32 - UTF编码的实现
+          </div>
+          <div class="fragment fade-up">
+            UTF-8 - 使用最广泛的UTF编码<br>
+            广泛应用为HTML、CSS、JS，以及各类文本文件的编码方式
+          </div>
+          <aside class="notes">
+            需要注意的是，Unicode只是一个字符集标准，并没有规定如何存储或传输，所以还需要与Unicode对应的编码方式来进行编码<br>
+            实际上Unicode广义上的定义，是包含字符集标准和一系列的编码规则的，Unicode的编码方式称为Unicode转换格式(Unicode Transformation Format，简称为UTF)<br>
+            常见的UTF编码实现有：UTF-8/16/32，这里的8/16/32是指的使用的bit数，也就是需要多少二进制位<br>
+            UTF-8是使用的最广泛的UTF编码，广泛应用为各类文件的编码方式
+          </aside>
+        </section>
+        <section>
+          <h3>UTF编码对比</h3>
+          <table class="table-middle" style="font-size: 20px;">
+            <thead>
+            <tr>
+              <th>编码方式</th>
+              <th>是否变长</th>
+              <th>字节数</th>
+              <th>bit位</th>
+              <th>应用场景</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>UTF-8</td>
+              <td>是</td>
+              <th>1-4</th>
+              <th>8-32位</th>
+              <th>网络传输、文本存储</th>
+            </tr>
+            <tr>
+              <td>UTF-16</td>
+              <td>是</td>
+              <th>2或4</th>
+              <th>16或32位</th>
+              <th>js/java等语言内部编码</th>
+            </tr>
+            <tr>
+              <td>UTF-32</td>
+              <td>否</td>
+              <th>4</th>
+              <th>32位</th>
+              <th>查询</th>
+            </tr>
+            </tbody>
+          </table>
+          <aside class="notes">
+            然后我们再来看下各种UTF编码之间的对比，就了解为什么UTF-8是使用最广泛的UTF编码了。<br>
+            通过这个表格我们可以看到，UTF-8是一种变长的编码方式，字节长度在1-4之间，是空间占用最小的UTF编码。<br>
+            根据字符的不同，存储的字节长度会有不同，码点转换规则简单总结一下就是：Unicode码点越靠前，则空间占用越小，前128位编码与ASCII码完全兼容，都是使用1个字节来标识。<br>
+            如果一个纯英文文档使用UTF-8存储，那么对比UTF-32编码，占用的存储空间只有后者的1/4，所以是使用最广泛的UTF编码。<br>
+
+            UTF-16是一种变长/定长结合的编码，字节长度固定为2或4。BMP字符占用2字节，非BMP字符占用4字节。而且码点转换规则更简单，所以是很多语言字符串使用的内部编码，比如js、java、c#、python。<br>
+            UTF-32是一种占用32bit位的定长编码，字节长度固定为4，不论是BMP还是非BMP字符。因为非BMP字符出现频率很低，所以导致空间利用率十分地下，会出现大量的为0的bit位。所以应用范围十分有限。<br>
+            比如HTML 5标准就明文规定，网页不得编码成UTF-32<br>
+            实际上在UTF-8和UTF-16中都涉及到了码点和编码之间的相互转换，这里内容比较多，大家感兴趣的话可以在参考文档中查看或者之后找我讨论。
+          </aside>
         </section>
       </section>
 
@@ -320,7 +387,7 @@
           <div>Emoji ZWJ Sequence</div>
           <div>
             <div class="fragment">🤷 + ♀ = 🤷‍♀️</div>
-            <div class="fragment">👩🏻 + 🦰 = 👩🏼‍🦰</div>
+            <div class="fragment">👩🏻 + 🦰 = ‍👩🏼‍🦰</div>
             <div class="fragment">👩 + 🍳 = 👩‍🍳</div>
             <div class="fragment">👨 + 👩 + 👧 = 👨‍👩‍👦</div>
           </div>
@@ -374,26 +441,26 @@
           <tr>
             <td>variation selector</td>
             <td>-</td>
-            <td><code class="code-point">U+FE0E</code></td>
-            <td><code class="code-point">U+FE0F</code></td>
+            <td><code class="code">U+FE0E</code></td>
+            <td><code class="code">U+FE0F</code></td>
             <td>-︎</td>
           </tr>
           <tr>
-            <td><a href="https://codepoints.net/U+2764"><code class="code-point">U+2764</code></a></td>
+            <td><a href="https://codepoints.net/U+2764"><code class="code">U+2764</code></a></td>
             <td>❤</td>
             <td>❤︎</td>
             <td>❤️</td>
             <td><img height="25" src="https://mts.io/public/images/2015/04/emoji-heart.png" alt="Apple heart emoji"></td>
           </tr>
           <tr>
-            <td><a href="https://codepoints.net/U+21A9"><code class="code-point">U+21A9</code></a></td>
+            <td><a href="https://codepoints.net/U+21A9"><code class="code">U+21A9</code></a></td>
             <td>↩</td>
             <td>↩︎</td>
             <td>↩️</td>
             <td><img height="25" src="https://mts.io/public/images/2015/04/emoji-return.png" alt="Apple return emoji"></td>
           </tr>
           <tr>
-            <td><a href="https://codepoints.net/U+25B6"><code class="code-point">U+25B6</code></a></td>
+            <td><a href="https://codepoints.net/U+25B6"><code class="code">U+25B6</code></a></td>
             <td>▶</td>
             <td>▶︎</td>
             <td>▶️</td>
@@ -428,30 +495,80 @@
         <p>'👩🏽‍💻'.length = 7</p>
         <p>'👨‍👩‍👧‍👦'.length = 11</p>
         <aside class="notes">
-          为什么会出现这种问题呢，接下来我们就要看一下Unicode在JS当中是如何存储的
+          为什么会出现这种问题呢，接下来我们就要看一下在JS当中字符串是如何存储的
         </aside>
       </section>
 
       <section>
         <h3>Unicode in JS</h3>
+        <div>ES2015规范定义：源代码文本使用Unicode（5.1及以上版本）表示，通常都以UTF-8编码</div>
+        <div>建议将源代码文本控制在ASCII码范围内，超出ASCII的字符应该避免使用</div>
+        <div class="fragment fade-up">
+          String类型是由16比特无符号整型数值（“元素”）组成的集合，最少包含0个元素，最多包含2<sup>53</sup>-1个元素。<br>
+          String类型通常用来在运行ECMAScript的程序中表示文本信息，因此String中的每个元素都被当作一个UTF-16码元值
+        </div>
       </section>
 
       <section>
         <section>
           <h3>UCS-2和UTF-16</h3>
+          <ol>
+            <li>1990，UCS-2编码发布(只支持16bit)</li>
+            <li>1995.5，JavaScript诞生</li>
+            <li>1995.10，第一个JavaScript解释器</li>
+            <li>1996.7，UTF-16发布，取代UCS-2</li>
+            <li>1996.11，NetScape提交JavaScript标准</li>
+            <li>1997.7，ECMA组织（TC39）发布262号标准文件（ECMA-262）的v1.0</li>
+          </ol>
+          <aside class="notes">
+            首先我们要看一下js中字符串编码的一段历史。<br>
+            js诞生最初，使用的编码格式其实UCS-2，在后续的标准迭代中，才替换为了UTF-16。<br>
+            我们看一下下面这条时间线，就知道为什么会出现这个诡异的情况了。<br>
+            USC2-和UTF-16两者的关系简单说，就是UTF-16取代了UCS-2，或者说UCS-2整合进了UTF-16。<br>
+            所以，现在只有UTF-16，没有UCS-2。
+          </aside>
         </section>
         <section>
-          <h3>代理对</h3>
+          <h3>UTF-16编码&代理对</h3>
+          <div style="text-align: left;">
+            <ul>
+              <li>BMP内的码点U+D800 ~ U+DFFF为空段</li>
+              <li>
+                <div>编号大于U+FFFF的字符</div>
+                <ul style="margin-left: 50px;font-size: 60%;">
+                  <li>一半映射在0xD800 ~ 0xDBFF(空间大小2<sup>10</sup>)</li>
+                  <li>一半映射在0xDC00 ~ 0xDFFF(空间大小2<sup>10</sup>)</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <aside class="notes">
+            UTF-16编码字符串时有一个问题，当我们遇到两个字节，怎么看出它本身是一个字符，还是需要跟其他两个字节放在一起解读？<br>
+            当我们遇到两个字节，发现它的码点在U+D800到U+DBFF之间，就可以断定，紧跟在后面的两个字节的码点，应该在U+DC00到U+DFFF之间，这四个字节必须放在一起解读。
+          </aside>
         </section>
       </section>
 
       <section>
-        <section>
-          <h3>字符串长度计算问题</h3>
-        </section>
-        <section>
-          <h3>解决方案</h3>
-        </section>
+        <h3>字符串问题-解决方案</h3>
+        <ul>
+          <li>字符串长度</li>
+          <li>字符定位</li>
+          <li>正则匹配</li>
+          <li>码点转义</li>
+        </ul>
+        <div class="fragment fade-in"><code class="code">[...str] || Array.from(str)</code></div>
+        <div class="fragment fade-in"><code class="code">/^.$/u.test('𠮷')</code></div>
+        <div class="fragment fade-in"><code class="code">\u{1F600}</code></div>
+        <aside class="notes">
+          最后，我们看回刚才的字符串长度的问题。<br>
+          ES6+版本中提供的一些新特性，可以帮助我们解决刚才提到的一些问题。<br>
+
+          我们可以使用`String.prototype[@@iterator]`字符串的迭代器创建一个字符数组，通过这个数组的长度来计算长度，通过数组下标来访问Unicode字符<br>
+          正则表达式使用u修饰符<br>
+          码点表示法加大括号<br>
+          不过在面对组合emoji的时候，对字符串的长度计算还是会有问题，这个包括其他语言在内，目前都还没有太好的解决办法，只能借助于三方库判断码点来解决。<br>
+        </aside>
       </section>
 
       <section style="text-align: left;">
