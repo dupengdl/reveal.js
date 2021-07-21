@@ -94,7 +94,7 @@
       </section>
 
       <section>
-        <img src="./images/unicode-basics.jpg" alt="unicode-logo" width="600">
+        <img src="./images/byte-bit.png" alt="unicode-logo" width="600">
         <h4 class="fragment-wrapper">
           <span class="fragment fade-in" data-fragment-index="4"><span class="fragment grow" data-fragment-index="5">Unicode(UTF-8/16/32)</span></span>
           <span class="fragment fade-in-then-semi-out" data-fragment-index="1">ASCII</span>
@@ -150,13 +150,16 @@
 
       <section>
         <section>
-          <div class="code-point">U+0041</div>
-          <div class="glyph-symbol">A</div>
-          <div class="unique-name">LATIN CAPITAL LETTER A</div>
+          <img src="./images/unicode-basics.jpg" alt="unicode-logo" width="600">
           <aside class="notes">
             Unicode规范中，一个字符的定义包括<i>码点code point</i>、<i>名称unique name</i>、以及它的<i>字形/符号表示</i>。
             我们先看三个例子
           </aside>
+        </section>
+        <section>
+          <div class="code-point">U+0041</div>
+          <div class="glyph-symbol">A</div>
+          <div class="unique-name">LATIN CAPITAL LETTER A</div>
         </section>
         <section>
           <div class="code-point">U+00A9</div>
@@ -173,19 +176,19 @@
           <p class="fragment fade-up">1,114,112 = <span class="fragment fade-in">143,924(已使用)</span><span class="fragment fade-in"> + 970,188(未使用)</span></p>
           <p class="fragment fade-up">1,114,112 = 2<sup>16</sup>×17</p>
           <p class="fragment fade-up">17个平面 = <span class="fragment fade-in">基本多文种平面(BMP)</span><span class="fragment fade-in"> + 16×辅助平面(星光平面)</span></p>
+          <aside class="notes">
+            刚才的例子中可以看到，码点的表示形式是U+{hex}的形式，{hex}是一个16进制数<br>
+            码点的意义其实类似于一个索引，通过唯一的码点，就可以找到对应的字符或符号。<br>
+            码点取值范围是从U+0000到U+10FFFF，例如刚才的A=U+0041、💩=U+1F4A9<br>
+            可用的码点一共有1,114,112个(已使用143,924个，剩余970,188)，这个数字是通过 2<sup>16</sup>×17 得来的<br>
+            17是Unicode划分出来的17组编排，称为平面(Plane)，每个平面用于65536个码点，目前只用到了7个平面，还有10个平面尚未使用
+          </aside>
         </section>
-        <aside class="notes">
-          刚才的例子中可以看到，码点的表示形式是U+{hex}的形式，{hex}是一个16进制数<br>
-          码点的意义其实类似于一个索引，通过唯一的码点，就可以找到对应的字符或符号。<br>
-          码点取值范围是从U+0000到U+10FFFF，例如刚才的A=U+0041、💩=U+1F4A9<br>
-          可用的码点一共有1,114,112个(已使用143,924个，剩余970,188)，这个数字是通过 2<sup>16</sup>×17 得来的<br>
-          17是Unicode划分出来的17组编排，称为平面(Plane)，每个平面用于65536个码点，目前只用到了7个平面，还有10个平面尚未使用
-        </aside>
       </section>
 
       <section>
         <section>
-          <div>Basic Multilingual Plane, BMP(基本多文种平面)</div>
+          <p>Basic Multilingual Plane, BMP(基本多文种平面)</p>
           <div>码点范围：U+0000 - U+FFFF</div>
           <img src="./images/BMP-usage.png" alt="bmp">
           <div><small>Unicode基本多文种平面的示意图。每个写着数字的格子代表256个码点</small></div>
@@ -215,29 +218,28 @@
       <section>
         <section>
           <h3>Unicode与编码</h3>
-          <div>
-            Unicode - 字符集标准
-          </div>
-          <div class="fragment fade-up">
-            Unicode Transformation Format(UTF) - Unicode的编码方式
-          </div>
-          <div class="fragment fade-up">
-            UTF-8/16/32 - UTF编码的实现
-          </div>
-          <div class="fragment fade-up">
-            UTF-8 - 使用最广泛的UTF编码<br>
-            广泛应用为HTML、CSS、JS，以及各类文本文件的编码方式
-          </div>
+          <p>
+            Unicode
+          </p>
+          <p class="fragment fade-up">
+            Unicode Transformation Format(UTF)
+          </p>
+          <p class="fragment fade-up">
+            UTF-8/16/32
+          </p>
+          <p class="fragment fade-up">
+            UTF-8 - 使用最广泛的UTF编码
+          </p>
           <aside class="notes">
             需要注意的是，Unicode只是一个字符集标准，并没有规定如何存储或传输，所以还需要与Unicode对应的编码方式来进行编码<br>
             实际上Unicode广义上的定义，是包含字符集标准和一系列的编码规则的，Unicode的编码方式称为Unicode转换格式(Unicode Transformation Format，简称为UTF)<br>
             常见的UTF编码实现有：UTF-8/16/32，这里的8/16/32是指的使用的bit数，也就是需要多少二进制位<br>
-            UTF-8是使用的最广泛的UTF编码，广泛应用为各类文件的编码方式
+            UTF-8是使用的最广泛的UTF编码，广泛应用为HTML、CSS、JS，以及各类文本文件的编码方式
           </aside>
         </section>
         <section>
           <h3>UTF编码对比</h3>
-          <table class="table-middle" style="font-size: 20px;">
+          <table class="table-middle" style="font-size: 24px;">
             <thead>
             <tr>
               <th>编码方式</th>
@@ -251,23 +253,23 @@
             <tr>
               <td>UTF-8</td>
               <td>是</td>
-              <th>1-4</th>
-              <th>8-32位</th>
-              <th>网络传输、文本存储</th>
+              <td>1-4</td>
+              <td>8-32位</td>
+              <td>网络传输、文本存储</td>
             </tr>
             <tr>
               <td>UTF-16</td>
               <td>是</td>
-              <th>2或4</th>
-              <th>16或32位</th>
-              <th>js/java等语言内部编码</th>
+              <td>2或4</td>
+              <td>16或32位</td>
+              <td>js/java等语言内部编码</td>
             </tr>
             <tr>
               <td>UTF-32</td>
               <td>否</td>
-              <th>4</th>
-              <th>32位</th>
-              <th>查询</th>
+              <td>4</td>
+              <td>32位</td>
+              <td>查询</td>
             </tr>
             </tbody>
           </table>
@@ -305,7 +307,7 @@
       </section>
 
       <section>
-        <div>Emoji Skin Tone Modifier</div>
+        <p>Emoji Skin Tone Modifier</p>
         <table style="font-size: 24px">
           <thead>
           <tr>
@@ -366,12 +368,12 @@
           </tr>
           </tbody>
         </table>
-        <div class="fragment fade-up">
+        <p class="fragment fade-up">
           支持对 手势类(✋✊)、运动类(🏄🏊‍️)、职业类(👩‍🚀🦸‍)emoji 的修饰
-        </div>
-        <div class="fragment fade-in">
+        </p>
+        <p class="fragment fade-in">
           <img src="./images/skin-tone.webp" alt="skin-tone">
-        </div>
+        </p>
         <aside class="notes">
           第一个特性是肤色修饰符。<br>
           Unicode 8.0中加入了5个Emoji的修饰符，用来调节人物类Emoji的肤色，这5个修饰符可以用于所有的无性别人物的emoji上，比如手势类、运动类、职业类emoji<br>
@@ -383,7 +385,7 @@
 
       <section>
         <section>
-          <div>Emoji ZWJ Sequence</div>
+          <p>Emoji ZWJ Sequence</p>
           <div>
             <div class="fragment">🤷 + ♀ = 🤷‍♀️</div>
             <div class="fragment">👩🏻 + 🦰 = ‍👩🏼‍🦰</div>
@@ -403,17 +405,17 @@
             👨 + 👩 + 👧 + 👦 + 👦 = ?
           </div>
           <div class="fragment fade-up">
+            <img width="500" src="./images/emojipedia-zwj-ideas.jpg" alt="zwj-ideas">
+          </div>
+          <div class="fragment fade-up">
             ❌
           </div>
           <div class="fragment fade-up">
-            👨‍👩‍👧‍👦‍👦
+            👨 + 👩 + 👧 + 👦 + 👦 = 👨‍👩‍👧‍👦‍👦
           </div>
-          <div class="fragment fade-up">
-            <img width="500" src="./images/emojipedia-zwj-ideas.jpg" alt="zwj-ideas">
-          </div>
-          <div class="fragment">
+          <p class="fragment">
             <a href="https://www.unicode.org/emoji/charts/emoji-zwj-sequences.html" target="_blank">Recommended Emoji ZWJ Sequences</a>
-          </div>
+          </p>
           <aside class="notes">
             ZWJ的出现在不增加Emoji码点的前提下，大大增加了Emoji的丰富度<br>
             那有同学可能会问，那我可不可以自由组合Emoji，比如我们响应国家号召，来一个5口之家的emoji？或者下图这些奇思妙想的组合<br>
@@ -500,12 +502,12 @@
 
       <section>
         <h3>Unicode in JS</h3>
-        <div>ES2015规范定义：源代码文本使用Unicode（5.1及以上版本）表示，通常都以UTF-8编码</div>
-        <div>建议将源代码文本控制在ASCII码范围内，超出ASCII的字符应该避免使用</div>
-        <div class="fragment fade-up">
+        <p>ES2015规范定义：源代码文本使用Unicode（5.1及以上版本）表示，通常都以UTF-8编码</p>
+        <p>建议将源代码文本控制在ASCII码范围内，超出ASCII的字符应该避免使用</p>
+        <p class="fragment fade-up">
           String类型是由16比特无符号整型数值（“元素”）组成的集合，最少包含0个元素，最多包含2<sup>53</sup>-1个元素。<br>
           String类型通常用来在运行ECMAScript的程序中表示文本信息，因此String中的每个元素都被当作一个UTF-16码元值
-        </div>
+        </p>
       </section>
 
       <section>
@@ -540,6 +542,9 @@
                 </ul>
               </li>
             </ul>
+          </div>
+          <div>
+            <img src="./images/BMP-usage.png" alt="bmp" width="500">
           </div>
           <aside class="notes">
             UTF-16编码字符串时有一个问题，当我们遇到两个字节，怎么看出它本身是一个字符，还是需要跟其他两个字节放在一起解读？<br>
